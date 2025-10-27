@@ -33,7 +33,7 @@ onUnmounted(() => {
 
 <template>
   <!-- <HeroSection /> -->
-  <SaveTheDate />
+  <SaveTheDate/>
   <!-- <AboutUsSection /> -->
   <!-- <OurStorySection /> -->
   <!-- <TimelineSection /> -->
