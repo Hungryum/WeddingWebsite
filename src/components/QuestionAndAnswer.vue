@@ -10,7 +10,7 @@ const emits = defineEmits(['toggle']);
 </script>
 
 <template>
-    <li class="faq-content-container">
+    <div class="faq-content-container">
         <div class="faq-content-header" @click="$emit('toggle')">
             <p>{{ question }}</p>
             <transition name="accordion-content">
@@ -22,7 +22,8 @@ const emits = defineEmits(['toggle']);
                 <slot name="answer"></slot>
             </div>
         </transition>
-    </li>
+        <span class="faq-content-divider"/>
+    </div>
 </template>
 
 <style scoped lang="sass">
@@ -36,13 +37,18 @@ const emits = defineEmits(['toggle']);
 
 .faq-content-header
     display: flex
-    justify-content: center
+    justify-content: space-between
     gap: 2vw
 
 .faq-content-header-chevron
     margin-top: 2vw
 
-/* Basic styling and transition styles */
+.faq-content-divider
+    border: none
+    border-top: 0.3vw solid v.$color
+    opacity: 0.5
+    width: 90%
+
 .accordion-content-enter-active,
 .accordion-content-leave-active
     transition: all 0.3s ease
