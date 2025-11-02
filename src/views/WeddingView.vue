@@ -13,6 +13,7 @@ import GallerySection from "../components/wedding/sections/GallerySection.vue";
 import CountdownSection from "../components/wedding/sections/CountdownSection.vue";
 import TestimonialsSection from "../components/wedding/sections/TestimonialsSection.vue";
 import SaveTheDate from "../components/wedding/sections/SaveTheDate.vue";
+import FAQ from "../components/wedding/sections/FAQ.vue"
 import ScrollToTop from "../components/wedding/ScrollToTop.vue";
 import { isInnerHeightReached } from "@/utils/helpers";
 
@@ -34,6 +35,7 @@ onUnmounted(() => {
 <template>
   <!-- <HeroSection /> -->
   <SaveTheDate/>
+  <FAQ/>
   <!-- <AboutUsSection /> -->
   <!-- <OurStorySection /> -->
   <!-- <TimelineSection /> -->

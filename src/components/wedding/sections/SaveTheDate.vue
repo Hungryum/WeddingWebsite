@@ -83,6 +83,7 @@ $parallax-image: url('@/assets/images/saveTheDate/sunset-background.png')
   background-size: cover
   position: relative
   height: 200vw
+  z-index: -1
 
 
 // Optional: Media query for mobile devices, as background-attachment: fixed can be problematic
