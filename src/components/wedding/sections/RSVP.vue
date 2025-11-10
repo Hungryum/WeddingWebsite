@@ -1,5 +1,6 @@
 <script setup lang="ts">
-import { ref, Ref } from 'vue';
+import { ref } from 'vue';
+import type { Ref } from 'vue';
 import { collection, doc, getDocs, query, setDoc, where } from 'firebase/firestore';
 import { db } from '@/firebase';
 
@@ -46,14 +47,22 @@ async function checkUserExists(): Promise<string | null> {
 async function checkExistingRSVP() {
     submitError.value = '';
     isSubmitting.value = true;
-    exisitingUserId.value = await checkUserExists();
+    
+    try {
+        exisitingUserId.value = await checkUserExists();
 
-    if (!exisitingUserId.value) {
-        submitError.value = "We can't seem to find you. Please double check the name inputed is correct or contact us for help.";
-        resetForm();
+        if (!exisitingUserId.value) {
+            submitError.value = "We can't seem to find you. Please double check the name inputed is correct or contact us for help.";
+            resetForm();
+        }
     }
-
-    isSubmitting.value = false;
+    catch (error) {
+        submitError.value = 'An error occurred while checking your RSVP. Please try again.';
+        console.error('RSVP check error:', error);
+    }
+    finally {
+        isSubmitting.value = false;
+    }
 }
 
 async function handleSubmit() {
