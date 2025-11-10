@@ -12,7 +12,7 @@ const emits = defineEmits(['toggle']);
 <template>
     <div class="faq-content-container">
         <div class="faq-content-header" @click="$emit('toggle')">
-            <p>{{ question }}</p>
+            <p class="faq-content-question">{{ question }}</p>
             <transition name="accordion-content">
                 <i :class="['faq-content-header-chevron', 'fa-solid', 'fa-xs', { 'fa-chevron-up': isOpen, 'fa-chevron-down': !isOpen }]"></i>
             </transition>
@@ -40,8 +40,15 @@ const emits = defineEmits(['toggle']);
     justify-content: space-between
     gap: 2vw
 
+.faq-content-question
+    font-family: Palmer Lake
+    font-size: 8vw
+    letter-spacing: -0.05rem
+    line-height: 4vw
+
 .faq-content-header-chevron
     margin-top: 2vw
+    font-size: 4vw
 
 .faq-content-divider
     border: none

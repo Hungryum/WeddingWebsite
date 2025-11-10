@@ -16,24 +16,25 @@ import weddingLogo from "../../../assets/images/peter-&-elaina-logo.png";
             <!-- BEGIN MAIN MENU -->
             <nav class="navbar">
               <ul class="nav navbar-nav">
-                <li><a href="#loveline">Our love story</a></li>
+                <!-- <li><a href="#loveline">Our love story</a></li> -->
 
                 <li class="dropdown">
                   <a
                     href="#the-wedding"
                     data-toggle="dropdown"
                     data-hover="dropdown"
-                    >The Marriage<b class="caret"></b
+                    >Jump to<b class="caret"></b
                   ></a>
                   <ul class="dropdown-menu">
-                    <li><a href="#the-wedding">RSVP</a></li>
-                    <li><a href="#location">Location & Directions</a></li>
+                    <li><a href="#rsvp-form">RSVP</a></li>
+                    <li><a href="#faq">FAQ</a></li>
+                    <!-- <li><a href="#location">Location & Directions</a></li> -->
                     <li>
-                      <a href="#bmiadsgmen">Bridesmaids & Groomsmen</a>
+                      <!-- <a href="#bmiadsgmen">Bridesmaids & Groomsmen</a> -->
                     </li>
-                    <li><a href="#giftregistry">Projet après Mariage</a></li>
+                    <!-- <li><a href="#giftregistry">Projet après Mariage</a></li> -->
                     <li><a href="#countdown">Countdown</a></li>
-                    <li><a href="#testimonials">Testimonials</a></li>
+                    <!-- <li><a href="#testimonials">Testimonials</a></li> -->
                   </ul>
                 </li>
               </ul>

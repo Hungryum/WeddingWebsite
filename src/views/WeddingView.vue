@@ -15,6 +15,7 @@ import TestimonialsSection from "../components/wedding/sections/TestimonialsSect
 import SaveTheDate from "../components/wedding/sections/SaveTheDate.vue";
 import FAQ from "../components/wedding/sections/FAQ.vue"
 import ScrollToTop from "../components/wedding/ScrollToTop.vue";
+import RSVP from "@/components/wedding/sections/RSVP.vue";
 import { isInnerHeightReached } from "@/utils/helpers";
 
 const displayScrollToTop = ref(false);
@@ -35,6 +36,7 @@ onUnmounted(() => {
 <template>
   <!-- <HeroSection /> -->
   <SaveTheDate/>
+  <RSVP/>
   <FAQ/>
   <!-- <AboutUsSection /> -->
   <!-- <OurStorySection /> -->

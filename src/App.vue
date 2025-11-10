@@ -34,4 +34,11 @@ import PreLoader from "./components/wedding/PreLoader.vue";
   font-weight: normal;
   font-style: normal;
 }
+
+@font-face {
+  font-family: "Rubik";
+  src: url("/src/assets/webfonts/rubik-variable-weight.ttf") format("truetype");
+  font-weight: normal;
+  font-style: normal;
+}
 </style>
