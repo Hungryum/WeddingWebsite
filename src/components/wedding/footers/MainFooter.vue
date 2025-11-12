@@ -24,7 +24,7 @@
 
           <div class="col-md-4">
             <div class="footer-info right">
-              E-mail: peter.elaina.home.@gmail.com
+              peter.elaina.home@gmail.com
             </div>
           </div>
         </div>

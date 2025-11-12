@@ -3,6 +3,9 @@ import { ref } from 'vue';
 import type { Ref } from 'vue';
 import { collection, doc, getDocs, query, setDoc, where } from 'firebase/firestore';
 import { db } from '@/firebase';
+import hoji from '@/assets/images/saveTheDate/hoji.png'
+import miso from '@/assets/images/saveTheDate/miso.png'
+import pumpkin from '@/assets/images/saveTheDate/pumpkin.png'
 
 interface RSVPForm {
     firstName: string;
@@ -140,6 +143,7 @@ function resetForm() {
         <h1 class="rsvp-title">RSVP</h1>
         <div class="rsvp-container" v-if="!submitSuccess">
             <form @submit.prevent="checkExistingRSVP" class="rsvp-form" v-if="!exisitingUserId">
+                <img class="rsvp-animals" :src="pumpkin">
                 <h2 class="rsvp-subtitle">Find my invite</h2>
                 <div class="form-group">
                     <label for="firstName">First Name *</label>
@@ -167,7 +171,8 @@ function resetForm() {
                 <p v-if="submitError" class="error-message">{{ submitError }}</p>
             </form>
             <form @submit.prevent="handleSubmit" class="rsvp-form" v-else>
-                <h2 class="rsvp-subtitle">Let us know if you can make it!</h2>
+                <img class="rsvp-animals rsvp-animals-hoji" :src="hoji">
+                <h2 class="rsvp-subtitle rsvp-subtitle-right">Let us know if you can make it!</h2>
                 <div class="form-group attendance-options">
                     <label class="attendance-label">Will you be attending? *</label>
                     <div class="radio-group">
@@ -225,45 +230,68 @@ function resetForm() {
                 <p v-if="submitError" class="error-message">{{ submitError }}</p>
             </form>
         </div>
-        <div v-else class="success-message">
-            <h2>Thank you for your RSVP!</h2>
-            <h4>We have received your submission and will be in touch soon!</h4>
+        <div v-else class="rsvp-container">
+            <div class="rsvp-form">
+                <img class="rsvp-animals rsvp-animals-miso" :src="miso">
+                <h2>Thank you!</h2>
+                <h4 class="rsvp-form-message">We have received your RSVP and will be in touch soon!</h4>
+            </div>
         </div>
     </div>
 </template>
 
 <style scoped lang="sass">
+@use '@/assets/style/style' as v
+
 .rsvp
     display: flex
     flex-direction: column
     align-items: center
     gap: 10vw
     margin: 0 auto
-    padding: 2rem
+    padding: 10vw 10vw
     font-size: 1rem
     margin-top: 9vw
     font-family: Rubik
     // background-color: rgba(120, 120, 200, 0.6)
-    h1
-        text-align: center
 
 .rsvp-container
+    position: relative
     max-width: 1200px
     width: 100%
 
 .rsvp-subtitle
-    text-align: center
+    text-align: left
     line-height: 0.6
-    margin-bottom: 4vw
+
+.rsvp-subtitle-right
+    padding-left: clamp(0px, 25vw, 250px)
+
+.rsvp-animals
+    position: absolute
+    top: 2vw
+    right: 5vw
+    width: 20vw
+    max-width: 200px
+    height: auto
+
+.rsvp-animals-hoji
+    width: 18vw
+    right: auto
+    left: 5vw
+
+.rsvp-animals-miso
+    top: 2vw
+    right: 2vw
 
 .rsvp-form
+    psoition: relative
     display: flex
     flex-direction: column
     gap: 1.5rem
     color: black
     background-color: white
     outline: 0.5vw solid #FF7032
-    padding: 2rem
     padding: 6vw
     border-radius: 5vw
 
@@ -271,6 +299,9 @@ function resetForm() {
     display: flex
     flex-direction: column
     gap: 0.5rem
+
+.rsvp-form-message
+    margin-top: 3vw
 
 label
     font-weight: bold
@@ -283,7 +314,7 @@ input
 
 button
     padding: 0.75rem
-    background-color: #FF7032
+    background-color: v.$color
     color: white
     border: none
     border-radius: 4px
@@ -297,10 +328,6 @@ button:disabled
 .error-message
     color: #ff0000
     margin-top: 1rem
-
-.success-message
-    text-align: center
-    color: black
 
 .attendance-options
     margin: 1rem 0
@@ -333,8 +360,8 @@ button:disabled
         pointer-events: none
         
     .custom-radio:checked + .custom-radio-button
-        background-color: #4CAF50
-        border-color: #4CAF50
+        background-color: v.$color
+        border-color: v.$color
 
     .custom-radio:checked + .custom-radio-button:after
         content: ''

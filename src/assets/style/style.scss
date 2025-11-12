@@ -45,7 +45,7 @@
 ================================================== */
 $color: #679bf1;
 $secondary-color: #B19CD9;
-$text-color: #FFF;
+$text-color: #B19CD9;
 $sat-color: #562135;
 $color-overlay: #fff5f2;
 $section-bg-color: #f9f9f9;
@@ -206,20 +206,21 @@ h6 {
 
 h1 {
   font-family: Magical Rhymes;
-  font-size: 8vw;
+  font-size: clamp(1rem, 8vw, 8rem);
 }
 
 h2 {
   font-family: Palmer Lake;
-  font-size: 12vw;
+  font-size: clamp(1rem, 12vw, 10rem);
+  line-height: clamp(1rem, 8vw, 12rem);
 }
 
 h3 {
-  font-size: 4vw;
+  font-size: clamp(1rem, 8vw, 6rem);
 }
 
 h4 {
-  font-size: 3vw;
+  font-size: clamp(1rem, 3vw, 2rem);
 }
 
 h5 {
@@ -1793,7 +1794,7 @@ p.center {
   h2 {
     text-align: center;
     margin: 10px 0 25px;
-    font-size: 26pt;
+    font-size: 46pt;
 
     i {
       margin-right: 10px;

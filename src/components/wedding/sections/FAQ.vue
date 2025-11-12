@@ -38,7 +38,7 @@ const toggleItem = (index: number) => {
             @toggle="toggleItem(index)"
             >
                 <template #answer>
-                    <p class="faq-content-answer">{{ item.answer }}</p>
+                    <h4 class="faq-content-answer">{{ item.answer }}</h4>
                 </template>
             </QuestionAnsAnswer>
         </div>
@@ -67,7 +67,7 @@ const toggleItem = (index: number) => {
 .faq-content
     display: flex
     flex-direction: column
-    gap: 8vw
+    gap: 6vw
     max-width: 1200px
     text-align: left
     background-color: white
@@ -78,5 +78,4 @@ const toggleItem = (index: number) => {
 .faq-content-answer
     color: v.$secondary-color
     font-family: Rubik
-    font-size: 3vw
 </style>
