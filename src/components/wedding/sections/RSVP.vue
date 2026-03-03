@@ -1,11 +1,17 @@
 <script setup lang="ts">
 import { ref } from 'vue';
 import type { Ref } from 'vue';
-import { collection, doc, getDocs, query, setDoc, where } from 'firebase/firestore';
+import { collection, doc, DocumentData, getDocs, query, setDoc, where } from 'firebase/firestore';
 import { db } from '@/firebase';
 import hoji from '@/assets/images/saveTheDate/hoji.png'
 import miso from '@/assets/images/saveTheDate/miso.png'
 import pumpkin from '@/assets/images/saveTheDate/pumpkin.png'
+
+enum BusLocation {
+    Cockburn = "cockburn station",
+    Perth = "perth city",
+    NotRequired = "not required"
+}
 
 interface RSVPForm {
     firstName: string;
@@ -13,6 +19,9 @@ interface RSVPForm {
     email: string;
     phone: string;
     isAttending: boolean | null;
+    pickUpDropOff: string;
+    allergyOrIntolerance: string;
+    dietaryPreference: string;
 }
 
 const form = ref<RSVPForm>({
@@ -20,15 +29,21 @@ const form = ref<RSVPForm>({
     lastName: '',
     email: '',
     phone: '',
-    isAttending: null
+    isAttending: null,
+    pickUpDropOff: '',
+    allergyOrIntolerance: '',
+    dietaryPreference: ''
 });
 
 const isSubmitting = ref(false);
 const submitError = ref('');
 const submitSuccess = ref(false);
 const exisitingUserId: Ref<string | null> = ref(null);
+const showAllergyInput: Ref<boolean | null> = ref(null);
+const showDietPreferenceInput: Ref<boolean | null> = ref(null);
+const showBusOptions: Ref<boolean | null> = ref(null);
 
-async function checkUserExists(): Promise<string | null> {
+async function checkUserExists(): Promise<DocumentData | null> {
     form.value.firstName = form.value.firstName.trim().toLowerCase();
     form.value.lastName = form.value.lastName.trim().toLowerCase();
 
@@ -44,7 +59,10 @@ async function checkUserExists(): Promise<string | null> {
         return null;
     }
 
-    return querySnapshot.docs[0].id;
+    const user = querySnapshot.docs[0]
+    exisitingUserId.value = user.id;
+
+    return user.data();
 }
 
 async function checkExistingRSVP() {
@@ -52,11 +70,28 @@ async function checkExistingRSVP() {
     isSubmitting.value = true;
     
     try {
-        exisitingUserId.value = await checkUserExists();
+         const user: DocumentData | null = await checkUserExists();
 
-        if (!exisitingUserId.value) {
+        if (!user) {
             submitError.value = "We can't seem to find you. Please double check the name inputed is correct or contact us for help.";
             resetForm();
+            return;
+        }
+
+        form.value.phone = user.phone;
+        form.value.email = user.email;
+        form.value.isAttending = user.isAttending;
+        form.value.pickUpDropOff = user.pickUpDropOff;
+        form.value.allergyOrIntolerance = user.allergyOrIntolerance;
+        form.value.dietaryPreference = user.dietaryPreference;
+        if(form.value.allergyOrIntolerance !== undefined) {
+            showAllergyInput.value = form.value.allergyOrIntolerance !== 'none';
+        }
+        if(form.value.dietaryPreference !== undefined) {
+            showDietPreferenceInput.value = form.value.dietaryPreference !== 'none';
+        }
+        if(form.value.pickUpDropOff !== undefined) {
+            showBusOptions.value = form.value.pickUpDropOff !== BusLocation.NotRequired;
         }
     }
     catch (error) {
@@ -80,19 +115,56 @@ async function handleSubmit() {
             return;
         }
 
+        if(form.value.isAttending === true) {
+            if(!form.value.pickUpDropOff) {
+                if (!showBusOptions.value) {
+                    submitError.value = 'Please let us know if you would like to use the bus.';
+                    return;
+                }
+            
+                submitError.value = 'Please choose a pick-up/drop-off location for the bus.';
+                return;
+            }
+
+            if(!form.value.allergyOrIntolerance) {
+                if(!showAllergyInput.value) {
+                    submitError.value = 'Please let us know if you have any allergies/intolerances.'
+                    return;
+                }
+                
+                submitError.value = 'Please list your allergies/intolerances.';
+                return;
+            }
+
+            if(!form.value.dietaryPreference) {
+                if(!showDietPreferenceInput.value) {
+                    submitError.value = 'Please let us know if you have any dietary preferences.';
+                    return;
+                }
+
+                submitError.value = 'Please list your dietary preferences.';
+                return;
+            }
+        }
+
         isSubmitting.value = true;
         submitError.value = '';
-        
+
         await setDoc(doc(db, "submissions", exisitingUserId.value), {
             ...form.value,
             submittedAt: new Date().toISOString()
         });
-        
+
         submitSuccess.value = true;
     } catch (error) {
         submitError.value = 'Failed to submit RSVP. Please try again.';
         console.error('RSVP submission error:', error);
     } finally {
+        if(!submitSuccess.value) {
+            return;
+        }
+
+        console.log("RSVP submitted")
         isSubmitting.value = false;
         exisitingUserId.value = null;
         resetForm();
@@ -127,13 +199,28 @@ async function createBaseUser() {
     resetForm();
 }
 
+function clearPickUpDropOff() {
+    form.value.pickUpDropOff = ''
+}
+
+function clearAllergyOrIntolerance() {
+    form.value.allergyOrIntolerance = '';
+}
+
+function cleardietaryPreference() {
+    form.value.dietaryPreference = '';
+}
+
 function resetForm() {
     form.value = {
         firstName: '',
         lastName: '',
         email: '',
         phone: '',
-        isAttending: null
+        isAttending: null,
+        pickUpDropOff: '',
+        allergyOrIntolerance: '',
+        dietaryPreference: '',
     };
 }
 </script>
@@ -204,25 +291,157 @@ function resetForm() {
                         </div>
                     </div>
                 </div>
-                <div class="form-group">
-                    <label for="email">Email *</label>
-                    <input 
-                        id="email"
-                        v-model="form.email"
-                        type="email"
-                        required
-                        placeholder="Enter your email"
-                    />
-                </div>
-                <h6>* So we can ask for your meal and dietary requirements later</h6>
-                <div class="form-group">
-                    <label for="phone">Phone Number</label>
-                    <input 
-                        id="phone"
-                        v-model="form.phone"
-                        type="tel"
-                        placeholder="Enter your phone number"
-                    />
+                <div class="form-group" v-if="form.isAttending !== false">
+                    <div class="form-group">
+                        <label for="email">Email *</label>
+                        <input 
+                            id="email"
+                            v-model="form.email"
+                            type="email"
+                            required
+                            placeholder="Enter your email"
+                        />
+                    </div>
+                    <h6>* So we can send you any important annoucements</h6>
+                    <div class="form-group">
+                        <label for="phone">Phone Number</label>
+                        <input 
+                            id="phone"
+                            v-model="form.phone"
+                            type="tel"
+                            placeholder="Enter your phone number"
+                        />
+                    </div>
+                    <label class="attendance-label">Will you require bus transport to and from the venue? *</label>
+                    <div class="radio-group">
+                        <div class="radio-option">
+                            <input 
+                                type="radio"
+                                id="bus-required"
+                                :value="true"
+                                v-model="showBusOptions"
+                                required
+                                class="custom-radio"
+                                :onclick="clearPickUpDropOff"
+                            />
+                            <span class="custom-radio-button"></span>
+                            <label for="bus-required">Yes please</label>
+                        </div>
+                        <div class="radio-option">
+                            <input 
+                                type="radio"
+                                id="bus-not-required"
+                                :value="false"
+                                v-model="showBusOptions"
+                                required
+                                class="custom-radio"
+                                :onclick="()=> form.pickUpDropOff = BusLocation.NotRequired"
+                            />
+                            <span class="custom-radio-button"></span>
+                            <label for="bus-not-required">No thanks</label>
+                        </div>
+                    </div>
+                    <div class="form-group" v-if="showBusOptions">
+                        <label class="attendance-label">Which pick-up/drop-off location would you prefer?</label>
+                        <div class="radio-group">
+                            <div class="radio-option">
+                                <input 
+                                    type="radio"
+                                    id="bus-cockburn"
+                                    :value="BusLocation.Cockburn"
+                                    v-model="form.pickUpDropOff"
+                                    :required="showBusOptions"
+                                    class="custom-radio"
+                                />
+                                <span class="custom-radio-button"></span>
+                                <label for="bus-cockburn">Cockburn Station</label>
+                            </div>
+                            <div class="radio-option">
+                                <input 
+                                    type="radio"
+                                    id="bus-city"
+                                    :value="BusLocation.Perth"
+                                    v-model="form.pickUpDropOff"
+                                    :required="showBusOptions"
+                                    class="custom-radio"
+                                />
+                                <span class="custom-radio-button"></span>
+                                <label for="bus-city">Perth City</label>
+                            </div>
+                        </div>
+                    </div>
+                    <label class="attendance-label">Do you have any Allergies/Intolerances?</label>
+                    <div class="radio-group">
+                        <div class="radio-option">
+                            <input
+                                type="radio"
+                                id="allergy-or-intolerance-yes"
+                                :value="true"
+                                v-model="showAllergyInput"
+                                class="custom-radio"
+                                :onclick="clearAllergyOrIntolerance"
+                            />
+                            <span class="custom-radio-button"></span>
+                            <label for="allergy-or-intolerance-yes">Yes</label>
+                        </div>
+                        <div class="radio-option">
+                            <input
+                                type="radio"
+                                id="allergy-or-intolerance-no"
+                                :value="false"
+                                v-model="showAllergyInput"
+                                class="custom-radio"
+                                :onclick="() => form.allergyOrIntolerance = 'none'"
+                            />
+                            <span class="custom-radio-button"></span>
+                            <label for="allergy-or-intolerance-no">No</label>
+                        </div>
+                    </div>
+                    <div class="form-group" v-if="showAllergyInput">
+                        <label for="allergies-list">Please list your Allergies/Intolerances</label>
+                        <input 
+                            id="allergies-list"
+                            v-model="form.allergyOrIntolerance"
+                            type="text"
+                            placeholder="Please list them here"
+                        />
+                    </div>
+                    <label class="attendance-label">Do you have any Dietary Preferences?</label>
+                    <div class="radio-group">
+                        <div class="radio-option">
+                            <input
+                                type="radio"
+                                id="dietary-preference-yes"
+                                :value="true"
+                                v-model="showDietPreferenceInput"
+                                class="custom-radio"
+                                :onclick="cleardietaryPreference"
+                            />
+                            <span class="custom-radio-button"></span>
+                            <label for="dietary-preference-yes">Yes</label>
+                        </div>
+                        <div class="radio-option">
+                            <input
+                                type="radio"
+                                id="dietary-preference-no"
+                                :value="false"
+                                v-model="showDietPreferenceInput"
+                                class="custom-radio"
+                                :onclick="() => form.dietaryPreference = 'none'"
+                            />
+                            <span class="custom-radio-button"></span>
+                            <label for="dietary-preference-no">No</label>
+                        </div>
+                    </div>
+                    <div class="form-group" v-if="showDietPreferenceInput">
+                        <label for="dietary-list">Please list your Dietary Preferences</label>
+                        <input
+                            id="dietary-list"
+                            v-model="form.dietaryPreference"
+                            type="text"
+                            placeholder="Please list them here"
+                        />
+                    </div>
                 </div>
                 <button type="submit" :disabled="isSubmitting">
                     {{ isSubmitting ? 'Submitting...' : 'Submit RSVP' }}
