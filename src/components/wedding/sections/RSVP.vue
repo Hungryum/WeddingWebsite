@@ -1,7 +1,8 @@
 <script setup lang="ts">
 import { ref } from 'vue';
 import type { Ref } from 'vue';
-import { collection, doc, DocumentData, getDocs, query, setDoc, where } from 'firebase/firestore';
+import { collection, doc, getDocs, query, setDoc, where } from 'firebase/firestore';
+import type { DocumentData } from "firebase/firestore";
 import { db } from '@/firebase';
 import hoji from '@/assets/images/saveTheDate/hoji.png'
 import miso from '@/assets/images/saveTheDate/miso.png'
