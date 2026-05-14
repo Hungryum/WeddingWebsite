@@ -18,22 +18,22 @@ interface RSVPForm {
     firstName: string;
     lastName: string;
     email: string;
-    phone: string;
+    phone: string | null;
     isAttending: boolean | null;
-    pickUpDropOff: string;
-    allergyOrIntolerance: string;
-    dietaryPreference: string;
+    pickUpDropOff: BusLocation | null;
+    allergyOrIntolerance: string | null;
+    dietaryPreference: string | null;
 }
 
 const form = ref<RSVPForm>({
     firstName: '',
     lastName: '',
     email: '',
-    phone: '',
+    phone: null,
     isAttending: null,
-    pickUpDropOff: '',
-    allergyOrIntolerance: '',
-    dietaryPreference: ''
+    pickUpDropOff: null,
+    allergyOrIntolerance: null,
+    dietaryPreference: null
 });
 
 const isSubmitting = ref(false);
@@ -78,22 +78,29 @@ async function checkExistingRSVP() {
             resetForm();
             return;
         }
-
-        form.value.phone = user.phone;
-        form.value.email = user.email;
+        
         form.value.isAttending = user.isAttending;
-        form.value.pickUpDropOff = user.pickUpDropOff;
-        form.value.allergyOrIntolerance = user.allergyOrIntolerance;
-        form.value.dietaryPreference = user.dietaryPreference;
-        if(form.value.allergyOrIntolerance !== undefined) {
-            showAllergyInput.value = form.value.allergyOrIntolerance !== 'none';
+        
+        if (user.isAttending === true) {
+            form.value.email = user.email;
+            form.value.phone = user.phone;
+            form.value.pickUpDropOff = user.pickUpDropOff;
+            form.value.allergyOrIntolerance = user.allergyOrIntolerance;
+            form.value.dietaryPreference = user.dietaryPreference;
+
+            if(user.allergyOrIntolerance !== undefined) {
+                showAllergyInput.value = form.value.allergyOrIntolerance !== 'none';
+            }
+    
+            if(user.dietaryPreference !== undefined) {
+                showDietPreferenceInput.value = form.value.dietaryPreference !== 'none';
+            }
+    
+            if(user.pickUpDropOff !== undefined) {
+                showBusOptions.value = form.value.pickUpDropOff !== BusLocation.NotRequired;
+            }
         }
-        if(form.value.dietaryPreference !== undefined) {
-            showDietPreferenceInput.value = form.value.dietaryPreference !== 'none';
-        }
-        if(form.value.pickUpDropOff !== undefined) {
-            showBusOptions.value = form.value.pickUpDropOff !== BusLocation.NotRequired;
-        }
+
     }
     catch (error) {
         submitError.value = 'An error occurred while checking your RSVP. Please try again.';
@@ -201,15 +208,15 @@ async function createBaseUser() {
 }
 
 function clearPickUpDropOff() {
-    form.value.pickUpDropOff = ''
+    form.value.pickUpDropOff = null
 }
 
 function clearAllergyOrIntolerance() {
-    form.value.allergyOrIntolerance = '';
+    form.value.allergyOrIntolerance = null;
 }
 
 function cleardietaryPreference() {
-    form.value.dietaryPreference = '';
+    form.value.dietaryPreference = null;
 }
 
 function resetForm() {
@@ -217,12 +224,28 @@ function resetForm() {
         firstName: '',
         lastName: '',
         email: '',
-        phone: '',
+        phone: null,
         isAttending: null,
-        pickUpDropOff: '',
-        allergyOrIntolerance: '',
-        dietaryPreference: '',
+        pickUpDropOff: null,
+        allergyOrIntolerance: null,
+        dietaryPreference: null,
     };
+
+    showBusOptions.value = null;
+    showAllergyInput.value = null;
+    showDietPreferenceInput.value = null;
+}
+
+function notAttending() {
+    form.value.phone = null;
+    form.value.email = '';
+    form.value.pickUpDropOff = null;
+    form.value.allergyOrIntolerance = null;
+    form.value.dietaryPreference = null;
+
+    showBusOptions.value = null;
+    showAllergyInput.value = null;
+    showDietPreferenceInput.value = null;
 }
 </script>
 
@@ -286,6 +309,7 @@ function resetForm() {
                                 v-model="form.isAttending"
                                 required
                                 class="custom-radio"
+                                :onclick="notAttending"
                             />
                             <span class="custom-radio-button"></span>
                             <label for="not-attending">No, I cannot attend</label>
@@ -451,11 +475,17 @@ function resetForm() {
             </form>
         </div>
         <div v-else class="rsvp-container">
-            <div class="rsvp-form">
+            <div class="rsvp-form" v-if="form.isAttending == true">
                 <img class="rsvp-animals rsvp-animals-miso" :src="miso">
                 <h2>Thank you!</h2>
                 <h4 class="rsvp-form-message">We have received your RSVP and will be in touch soon!</h4>
             </div>
+            <div class="rsvp-form" v-else>
+                <img class="rsvp-animals rsvp-animals-miso" :src="miso">
+                <h2>We will miss you!</h2>
+                <h4 class="rsvp-form-message">We have received your RSVP, but we understand you won't be able to join us.</h4>
+            </div>
+            
         </div>
     </div>
 </template>
@@ -491,7 +521,7 @@ function resetForm() {
     position: absolute
     top: 2vw
     right: 5vw
-    width: 20vw
+    width: 18vw
     max-width: 200px
     height: auto
 
