@@ -37,6 +37,7 @@ const form = ref<RSVPForm>({
 });
 
 const isSubmitting = ref(false);
+const isGoing = ref(false);
 const submitError = ref('');
 const submitSuccess = ref(false);
 const exisitingUserId: Ref<string | null> = ref(null);
@@ -175,6 +176,7 @@ async function handleSubmit() {
         console.log("RSVP submitted")
         isSubmitting.value = false;
         exisitingUserId.value = null;
+        isGoing.value = form.value.isAttending === true;
         resetForm();
     }
 }
@@ -475,7 +477,7 @@ function notAttending() {
             </form>
         </div>
         <div v-else class="rsvp-container">
-            <div class="rsvp-form" v-if="form.isAttending == true">
+            <div class="rsvp-form" v-if="isGoing === true">
                 <img class="rsvp-animals rsvp-animals-miso" :src="miso">
                 <h2>Thank you!</h2>
                 <h4 class="rsvp-form-message">We have received your RSVP and will be in touch soon!</h4>
