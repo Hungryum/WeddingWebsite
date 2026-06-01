@@ -23,6 +23,7 @@ interface RSVPForm {
     pickUpDropOff: BusLocation | null;
     allergyOrIntolerance: string | null;
     dietaryPreference: string | null;
+    birdRingBearer: boolean | null;
 }
 
 const form = ref<RSVPForm>({
@@ -33,7 +34,8 @@ const form = ref<RSVPForm>({
     isAttending: null,
     pickUpDropOff: null,
     allergyOrIntolerance: null,
-    dietaryPreference: null
+    dietaryPreference: null,
+    birdRingBearer: null
 });
 
 const isSubmitting = ref(false);
@@ -88,6 +90,7 @@ async function checkExistingRSVP() {
             form.value.pickUpDropOff = user.pickUpDropOff;
             form.value.allergyOrIntolerance = user.allergyOrIntolerance;
             form.value.dietaryPreference = user.dietaryPreference;
+            form.value.birdRingBearer = user.birdRingBearer;
 
             if(user.allergyOrIntolerance !== undefined) {
                 showAllergyInput.value = form.value.allergyOrIntolerance !== 'none';
@@ -177,6 +180,9 @@ async function handleSubmit() {
         isSubmitting.value = false;
         exisitingUserId.value = null;
         isGoing.value = form.value.isAttending === true;
+        if(isGoing.value) {
+            window.scrollBy(0, -600);
+        }
         resetForm();
     }
 }
@@ -231,6 +237,7 @@ function resetForm() {
         pickUpDropOff: null,
         allergyOrIntolerance: null,
         dietaryPreference: null,
+        birdRingBearer: null
     };
 
     showBusOptions.value = null;
@@ -244,6 +251,7 @@ function notAttending() {
     form.value.pickUpDropOff = null;
     form.value.allergyOrIntolerance = null;
     form.value.dietaryPreference = null;
+    form.value.birdRingBearer = null;
 
     showBusOptions.value = null;
     showAllergyInput.value = null;
@@ -287,7 +295,7 @@ function notAttending() {
                 <img class="rsvp-animals rsvp-animals-hoji" :src="hoji">
                 <h2 class="rsvp-subtitle rsvp-subtitle-right">Let us know if you can make it!</h2>
                 <div class="form-group attendance-options">
-                    <label class="attendance-label">Will you be attending? *</label>
+                    <label class="form-label">Will you be attending? *</label>
                     <div class="radio-group">
                         <div class="radio-option">
                             <input 
@@ -339,7 +347,7 @@ function notAttending() {
                             placeholder="Enter your phone number"
                         />
                     </div>
-                    <label class="attendance-label">Will you require bus transport to and from the venue? *</label>
+                    <label class="form-label">Will you require bus transport to and from the venue? *</label>
                     <div class="radio-group">
                         <div class="radio-option">
                             <input 
@@ -369,7 +377,7 @@ function notAttending() {
                         </div>
                     </div>
                     <div class="form-group" v-if="showBusOptions">
-                        <label class="attendance-label">Which pick-up/drop-off location would you prefer?</label>
+                        <label class="form-label">Which pick-up/drop-off location would you prefer?</label>
                         <div class="radio-group">
                             <div class="radio-option">
                                 <input 
@@ -397,7 +405,7 @@ function notAttending() {
                             </div>
                         </div>
                     </div>
-                    <label class="attendance-label">Do you have any Allergies/Intolerances?</label>
+                    <label class="form-label">Do you have any Allergies/Intolerances?</label>
                     <div class="radio-group">
                         <div class="radio-option">
                             <input
@@ -433,7 +441,7 @@ function notAttending() {
                             placeholder="Please list them here"
                         />
                     </div>
-                    <label class="attendance-label">Do you have any Dietary Preferences?</label>
+                    <label class="form-label">Do you have any Dietary Preferences?</label>
                     <div class="radio-group">
                         <div class="radio-option">
                             <input
@@ -469,6 +477,31 @@ function notAttending() {
                             placeholder="Please list them here"
                         />
                     </div>
+                    <label class="form-label">Would you like the chance to be the Ring Bearer? (Birds involved)</label>
+                    <div class="radio-group">
+                        <div class="radio-option">
+                            <input
+                                type="radio"
+                                id="ring-bearer-yes"
+                                :value="true"
+                                v-model="form.birdRingBearer"
+                                class="custom-radio"
+                            />
+                            <span class="custom-radio-button"></span>
+                            <label for="ring-bearer-yes">Yes! Owl accept!</label>
+                        </div>
+                        <div class="radio-option">
+                            <input
+                                type="radio"
+                                id="ring-bearer-no"
+                                :value="false"
+                                v-model="form.birdRingBearer"
+                                class="custom-radio"
+                            />
+                            <span class="custom-radio-button"></span>
+                            <label for="ring-bearer-no">That's eggciting, but I'm too hawkward for the job</label>
+                        </div>
+                    </div>
                 </div>
                 <button type="submit" :disabled="isSubmitting">
                     {{ isSubmitting ? 'Submitting...' : 'Submit RSVP' }}
@@ -479,12 +512,12 @@ function notAttending() {
         <div v-else class="rsvp-container">
             <div class="rsvp-form" v-if="isGoing === true">
                 <img class="rsvp-animals rsvp-animals-miso" :src="miso">
-                <h2>Thank you!</h2>
+                <h2 class="rsvp-form-title">We're so glad you can make it!</h2>
                 <h4 class="rsvp-form-message">We have received your RSVP and will be in touch soon!</h4>
             </div>
             <div class="rsvp-form" v-else>
                 <img class="rsvp-animals rsvp-animals-miso" :src="miso">
-                <h2>We will miss you!</h2>
+                <h2 class="rsvp-form-title">We will miss you!</h2>
                 <h4 class="rsvp-form-message">We have received your RSVP, but we understand you won't be able to join us.</h4>
             </div>
             
@@ -506,6 +539,9 @@ function notAttending() {
     margin-top: 9vw
     font-family: Rubik
     // background-color: rgba(120, 120, 200, 0.6)
+
+.rsvp-form-title
+    margin-right: 5vw
 
 .rsvp-container
     position: relative
@@ -584,7 +620,7 @@ button:disabled
 .attendance-options
     margin: 1rem 0
 
-.attendance-label
+.form-label
     margin-bottom: 0.5rem
 
 .radio-group
