@@ -1,53 +1,55 @@
 <script setup lang="ts">
-import { onMounted, onUnmounted, ref } from "vue";
+import { onMounted, onUnmounted, ref } from 'vue'
 
-import HeroSection from "../components/wedding/sections/HeroSection.vue";
-import AboutUsSection from "../components/wedding/sections/AboutUsSection.vue";
-import OurStorySection from "../components/wedding/sections/OurStorySection.vue";
-import TimelineSection from "../components/wedding/sections/TimelineSection.vue";
-import WeddingSection from "../components/wedding/sections/WeddingSection.vue";
-import WeddingLocationFullSection from "../components/wedding/sections/WeddingLocationFullSection.vue";
-import BridesMaidsAndGroomsMenSection from "../components/wedding/sections/BridesMaidsAndGroomsMenSection.vue";
-import WeddingGiftsSection from "../components/wedding/sections/WeddingGiftsSection.vue";
-import GallerySection from "../components/wedding/sections/GallerySection.vue";
-import CountdownSection from "../components/wedding/sections/CountdownSection.vue";
-import TestimonialsSection from "../components/wedding/sections/TestimonialsSection.vue";
-import SaveTheDate from "../components/wedding/sections/SaveTheDate.vue";
-import FAQ from "../components/wedding/sections/FAQ.vue"
-import ScrollToTop from "../components/wedding/ScrollToTop.vue";
-import RSVP from "@/components/wedding/sections/RSVP.vue";
-import { isInnerHeightReached } from "@/utils/helpers";
+import HeroSection from '../components/wedding/sections/HeroSection.vue'
+import AboutUsSection from '../components/wedding/sections/AboutUsSection.vue'
+import OurStorySection from '../components/wedding/sections/OurStorySection.vue'
+import TimelineSection from '../components/wedding/sections/TimelineSection.vue'
+import WeddingSection from '../components/wedding/sections/WeddingSection.vue'
+import WeddingLocationFullSection from '../components/wedding/sections/WeddingLocationFullSection.vue'
+import BridesMaidsAndGroomsMenSection from '../components/wedding/sections/BridesMaidsAndGroomsMenSection.vue'
+import WeddingGiftsSection from '../components/wedding/sections/WeddingGiftsSection.vue'
+import GallerySection from '../components/wedding/sections/GallerySection.vue'
+import CountdownSection from '../components/wedding/sections/CountdownSection.vue'
+import TestimonialsSection from '../components/wedding/sections/TestimonialsSection.vue'
+import SaveTheDate from '../components/wedding/sections/SaveTheDate.vue'
+import FAQ from '../components/wedding/sections/FAQ.vue'
+import ScrollToTop from '../components/wedding/ScrollToTop.vue'
+import RSVP from '@/components/wedding/sections/RSVP.vue'
+import BusSchedule from '@/components/wedding/sections/BusSchedule.vue'
+import { isInnerHeightReached } from '@/utils/helpers'
 
-const displayScrollToTop = ref(false);
+const displayScrollToTop = ref(false)
 
 const onScroll = () => {
-  displayScrollToTop.value = isInnerHeightReached();
-};
+	displayScrollToTop.value = isInnerHeightReached()
+}
 
 onMounted(() => {
-  window.addEventListener("scroll", onScroll);
-});
+	window.addEventListener('scroll', onScroll)
+})
 
 onUnmounted(() => {
-  window.document.body.removeEventListener("scroll", onScroll);
-});
+	window.document.body.removeEventListener('scroll', onScroll)
+})
 </script>
 
 <template>
-  <!-- <HeroSection /> -->
-  <SaveTheDate/>
-  <RSVP/>
-  <FAQ/>
-  <!-- <AboutUsSection /> -->
-  <!-- <OurStorySection /> -->
-  <!-- <TimelineSection /> -->
-  <!-- <WeddingSection /> -->
-  <!-- <WeddingLocationFullSection /> -->
-  <!-- <BridesMaidsAndGroomsMenSection /> -->
-  <!-- <WeddingGiftsSection /> -->
-  <!-- <GallerySection /> -->
-  <CountdownSection />
-  <!-- <TestimonialsSection /> -->
+	<!-- <HeroSection /> -->
+	<SaveTheDate />
+	<RSVP />
+	<!-- <AboutUsSection /> -->
+	<!-- <OurStorySection /> -->
+	<!-- <TimelineSection /> -->
+	<!-- <WeddingSection /> -->
+	<BusSchedule />
+	<!-- <WeddingLocationFullSection /> -->
+	<FAQ />
+	<!-- <BridesMaidsAndGroomsMenSection /> -->
+	<!-- <WeddingGiftsSection /> -->
+	<!-- <GallerySection /> -->
+	<CountdownSection />
+	<!-- <TestimonialsSection /> -->
 
-  <ScrollToTop v-if="displayScrollToTop" />
+	<ScrollToTop v-if="displayScrollToTop" />
 </template>
