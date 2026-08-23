@@ -4,7 +4,7 @@ import { onMounted, onUnmounted, ref } from 'vue'
 import HeroSection from '../components/wedding/sections/HeroSection.vue'
 import AboutUsSection from '../components/wedding/sections/AboutUsSection.vue'
 import OurStorySection from '../components/wedding/sections/OurStorySection.vue'
-import TimelineSection from '../components/wedding/sections/TimelineSection.vue'
+import TimelineSection from '../components/wedding/sections/Timeline.vue'
 import WeddingSection from '../components/wedding/sections/WeddingSection.vue'
 import WeddingLocationFullSection from '../components/wedding/sections/WeddingLocationFullSection.vue'
 import BridesMaidsAndGroomsMenSection from '../components/wedding/sections/BridesMaidsAndGroomsMenSection.vue'
@@ -40,9 +40,9 @@ onUnmounted(() => {
 	<RSVP />
 	<!-- <AboutUsSection /> -->
 	<!-- <OurStorySection /> -->
-	<!-- <TimelineSection /> -->
-	<!-- <WeddingSection /> -->
 	<BusSchedule />
+	<TimelineSection />
+	<!-- <WeddingSection /> -->
 	<!-- <WeddingLocationFullSection /> -->
 	<FAQ />
 	<!-- <BridesMaidsAndGroomsMenSection /> -->

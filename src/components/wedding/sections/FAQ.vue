@@ -113,7 +113,6 @@ const toggleItem = (index: number) => {
     text-align: center
     margin: 0 auto 5vw
     position: relative
-    font-family: Magical Rhymes
     line-height: 0.7
     margin-bottom: 10vw
 
