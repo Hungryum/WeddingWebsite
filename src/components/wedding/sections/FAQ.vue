@@ -11,7 +11,12 @@ const questionAndAnswers = [
 	{
 		question: "What's the dress code?",
 		answer:
-			'We would love it if you could dress in your best Formal Cocktail attire.',
+			'The official dress code is Cocktail attire, which entails a suit jacket, nice button-up shirt, dress pants, and dress shoes for the gentlemen, and a cocktail dress or elegant outfit for the ladies. We want you to be comfortable and enjoy the day, so please wear what makes you feel good! Please note that the ceremony will be held outdoors and on the lawn.',
+	},
+	{
+		question: 'What colours should I wear?',
+		answer:
+			'Our wedding is quite colourful, so we would love it if you could also wear something bright to match, but please don’t feel obliged to do so. Our only request is to avoid wearing white. We just want you to be look great and enjoy the day!',
 	},
 	{
 		question: 'What’s the weather usually like at this time of year?',
