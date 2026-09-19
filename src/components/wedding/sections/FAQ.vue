@@ -11,7 +11,7 @@ const questionAndAnswers = [
 	{
 		question: "What's the dress code?",
 		answer:
-			'The official dress code is Cocktail attire, which entails a suit jacket, nice button-up shirt, dress pants, and dress shoes for the gentlemen, and a cocktail dress or elegant outfit for the ladies. We want you to be comfortable and enjoy the day, so please wear what makes you feel good! Please note that the ceremony will be held outdoors and on the lawn.',
+			'The official dress code is Cocktail attire, which entails a nice suit jacket, a button-up shirt, dress pants, and dress shoes for the gentlemen, and a cocktail dress or elegant outfit for the ladies. We want you to be comfortable and enjoy the day, so please wear what makes you feel good! Please note that the ceremony will be held outdoors and on the lawn.',
 	},
 	{
 		question: 'What colours should I wear?',
@@ -52,11 +52,11 @@ const questionAndAnswers = [
 		question:
 			'Can I still attend if I am not feeling well or coming down with something on the day of the wedding?',
 		answer:
-			'Please stay home and rest! Contact one of the bridal party as soon as possible so they may let the relevant teams know.',
+			'Please stay home and rest! Contact Kate (0447 677 336) as soon as possible so they may let the relevant teams know.',
 	},
 	{
 		question: "I don't know if my attire is appropriate?",
-		answer: 'Please ask one of the bridesmaids if you are unsure.',
+		answer: 'Please contact Kate (0447 677 336) to ask if you are unsure.',
 	},
 	{
 		question: 'Are kids welcome at the wedding?',
@@ -72,6 +72,12 @@ const questionAndAnswers = [
 		question: 'Can I bring a plus one?',
 		answer:
 			' As much as we would love to extend the invite to the whole world, due to our venue (and our budget) we must limit our guests to those named on your invitation',
+	},
+	{
+		question:
+			'If I have a question that is not listed here, who should I contact?',
+		answer:
+			'Please contact Kate (0447 677 336) for any questions not listed in the FAQ.',
 	},
 ]
 
