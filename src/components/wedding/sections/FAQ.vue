@@ -19,6 +19,10 @@ const questionAndAnswers = [
 			'Our wedding is quite colourful, so we would love it if you could also wear something bright to match, but please don’t feel obliged to do so. Our only request is to avoid wearing white. We just want you to be look great and enjoy the day!',
 	},
 	{
+		question: "I don't know if my attire is appropriate?",
+		answer: 'Please contact Kate (0447 677 336) to ask if you are unsure.',
+	},
+	{
 		question: 'What’s the weather usually like at this time of year?',
 		answer:
 			'As it will be during early Spring it might still get a little chilly at night so be sure to bring multiple layers just in case.',
@@ -49,14 +53,15 @@ const questionAndAnswers = [
 			'Yes Millbrook Winery has plenty of parking with a car park at the entrance and behind the building.',
 	},
 	{
+		question: 'Do you have a gift registry?',
+		answer:
+			'We do not have a gift registry but there will be a wishing well at the venue for those who would like to contribute to our honeymoon!',
+	},
+	{
 		question:
 			'Can I still attend if I am not feeling well or coming down with something on the day of the wedding?',
 		answer:
 			'Please stay home and rest! Contact Kate (0447 677 336) as soon as possible so they may let the relevant teams know.',
-	},
-	{
-		question: "I don't know if my attire is appropriate?",
-		answer: 'Please contact Kate (0447 677 336) to ask if you are unsure.',
 	},
 	{
 		question: 'Are kids welcome at the wedding?',
@@ -72,6 +77,12 @@ const questionAndAnswers = [
 		question: 'Can I bring a plus one?',
 		answer:
 			' As much as we would love to extend the invite to the whole world, due to our venue (and our budget) we must limit our guests to those named on your invitation',
+	},
+	{
+		question:
+			'Are pictures allowed during the wedding ceremony and/or reception?',
+		answer:
+			'We kindly request that no photos or videos be taken during the ceremony to allow everyone to be fully present. During the reception, you are welcome to take photos and videos but please do not post them to social media until after the bride and groom have had a chance to share them first.',
 	},
 	{
 		question:
